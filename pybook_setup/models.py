@@ -139,3 +139,7 @@ class Workbook:
             return [r.strip() for r in requirements]
 
         return []
+
+    @property
+    def package_version(self) -> str:
+        return self.properties.get("pythonPackageVersion", "0.0.0")

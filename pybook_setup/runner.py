@@ -9,12 +9,14 @@ from .codemod import (
     lint_package,
     write_requirements_txt_if_needed,
 )
+from .models import Workbook
 
 
 class SetupRunner:
     def __init__(self, workbook_root: Path, package_name: str):
         self.workbook_root = workbook_root
         self.package_name = package_name
+        self.workbook: Workbook | None = None
 
     def setup(self, **kwargs):
         install_requires = []
@@ -24,6 +26,7 @@ class SetupRunner:
 
         self._setup(
             name=self.package_name,
+            version=self.workbook.package_version if self.workbook else "0.0.0",
             packages=find_packages(
                 where=self.workbook_root.absolute(),
                 exclude=[
@@ -45,6 +48,7 @@ class SetupRunner:
         if not target_package_path.exists():
             logging.info(f"Producing {target_package_path}...")
             workbook = read_workbook(self.workbook_root)
+            self.workbook = workbook
             normalize_workbook(workbook)
             normalize_dir_structure(workbook, self.package_name)
             lint_package()
