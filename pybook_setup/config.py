@@ -1,6 +1,7 @@
 import re
-from .models import NotebookLanguage
+from typing import Literal
 
+NotebookLanguage = Literal["ai", "html", "javascript", "markdown", "python", "sql"]
 BLOCK_SPLIT_PATTERNS: dict[NotebookLanguage, str] = {
     "ai": r"(// @id \w+)",
     "html": r"(<!-- @id \w+ -->)",

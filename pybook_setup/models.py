@@ -1,12 +1,8 @@
-import logging
 from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
-from typing import Literal
-from .config import PYTHON_EXCLUSION_PATTERNS
 
-
-NotebookLanguage = Literal["ai", "html", "javascript", "markdown", "python", "sql"]
+from .config import PYTHON_EXCLUSION_PATTERNS, NotebookLanguage
 
 
 @dataclass(frozen=True, kw_only=True)
