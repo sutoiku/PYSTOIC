@@ -172,7 +172,7 @@ def read_workbook(workbook_root: Path) -> Workbook:
     return Workbook(
         id=workbook_spec["id"],
         description=workbook_spec.get("description", None),
-        name=git_repo_name(),
+        name=workbook_root.name,
         path=path,
         properties=read_resource_properties(resource_spec=workbook_spec),
         spec=workbook_spec,
