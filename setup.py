@@ -7,4 +7,7 @@ setup(
     packages=find_packages(),
     install_requires=Path("requirements.txt").read_text().splitlines(),
     python_requires=">=3.10",
+    package_data={
+        "": ["*.txt", "*.toml"],
+    },
 )
