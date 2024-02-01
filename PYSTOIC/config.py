@@ -20,5 +20,6 @@ NB_FILE_NAMES: dict[NotebookLanguage, str] = {
 }
 PYTHON_EXCLUSION_PATTERNS = [
     re.compile(r"#\s*exclude[:#\s]*"),
+    re.compile(r"#\s*test[:#\s]*"),
     re.compile(r"def\s+test_"),
 ]
