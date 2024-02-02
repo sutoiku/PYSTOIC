@@ -1,4 +1,3 @@
-from .reader import read_package_name
-from .runner import SetupRunner
+from .setup import setup
 
-__all__ = ["SetupRunner", "read_package_name"]
+__all__ = ["setup"]

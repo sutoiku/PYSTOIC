@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 
 from setuptools import setup as _setup, find_packages
-from .reader import read_workbook
+from .reader import read_workbook, read_package_name
 from .codemod import (
     normalize_workbook,
     normalize_dir_structure,
@@ -13,9 +13,9 @@ from .models import Workbook
 
 
 class SetupRunner:
-    def __init__(self, workbook_root: Path, package_name: str):
+    def __init__(self, workbook_root: Path, package_name: str | None = None):
         self.workbook_root = workbook_root
-        self.package_name = package_name
+        self.package_name = package_name or read_package_name(workbook_root)
         self.workbook: Workbook | None = None
 
     def setup(self, **kwargs):
