@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+import os
 
 from setuptools import setup as _setup, find_packages
 from .reader import read_workbook, read_package_name
@@ -12,6 +13,14 @@ from .codemod import (
 from .models import Workbook
 
 
+def _parse_requirements(requirements_content: str) -> list[str]:
+    return [
+        os.path.expandvars(line.strip())
+        for line in requirements_content.splitlines()
+        if line.strip() and not line.strip().startswith("#")
+    ]
+
+
 class SetupRunner:
     def __init__(self, workbook_root: Path, package_name: str | None = None):
         self.workbook_root = workbook_root
@@ -22,7 +31,7 @@ class SetupRunner:
         install_requires = []
         wb_requirements = self.workbook_root / "requirements.txt"
         if wb_requirements.exists():
-            install_requires = wb_requirements.read_text().splitlines()
+            install_requires = _parse_requirements(wb_requirements.read_text())
 
         self._setup(
             name=self.package_name,
