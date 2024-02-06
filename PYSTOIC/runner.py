@@ -32,7 +32,7 @@ class SetupRunner:
         wb_requirements = self.workbook_root / "requirements.txt"
         if wb_requirements.exists():
             requirements_content = wb_requirements.read_text()
-            should_expand_vars = kwargs.pop("requirements_expand_vars", False)
+            should_expand_vars = kwargs.pop("requirements_expand_vars", True)
             install_requires = (
                 _parse_requirements(requirements_content)
                 if should_expand_vars
