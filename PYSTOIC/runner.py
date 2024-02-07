@@ -41,7 +41,7 @@ class SetupRunner:
             )
         version = self.workbook.package_version if self.workbook else "0.0.0"
         git_hash = git_hash_short()
-        version_maybe_suffixed = f"{version}-{git_hash}" if git_hash else version
+        version_maybe_suffixed = f"{version}+{git_hash}" if git_hash else version
 
         self._setup(
             name=self.package_name,
