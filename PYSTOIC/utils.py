@@ -1,19 +1,24 @@
-import re
-import subprocess
 import logging
+import re
+import shutil
+import subprocess
 
 
 def git_repo_name() -> str | None:
+    git = shutil.which("git")
+    if git is None:
+        return None
+
     try:
         remote_url = (
             subprocess.check_output(
-                ["git", "config", "--get", "remote.origin.url"],
+                [git, "config", "--get", "remote.origin.url"],
                 stderr=subprocess.STDOUT,
             )
             .strip()
             .decode("utf-8")
         )
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         logging.error(f"Error getting remote origin URL: {e}", exc_info=True)
         return None
 
@@ -26,15 +31,19 @@ def git_repo_name() -> str | None:
 
 
 def git_hash_short() -> str | None:
+    git = shutil.which("git")
+    if git is None:
+        return None
+
     try:
         return (
             subprocess.check_output(
-                ["git", "rev-parse", "--short", "HEAD"], stderr=subprocess.STDOUT
+                [git, "rev-parse", "--short", "HEAD"], stderr=subprocess.STDOUT
             )
             .strip()
             .decode("utf-8")
         )
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         logging.error(f"Error getting git hash: {e}", exc_info=True)
         return None
 
