@@ -25,6 +25,20 @@ def git_repo_name() -> str | None:
     return repo_name
 
 
+def git_hash_short() -> str | None:
+    try:
+        return (
+            subprocess.check_output(
+                ["git", "rev-parse", "--short", "HEAD"], stderr=subprocess.STDOUT
+            )
+            .strip()
+            .decode("utf-8")
+        )
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Error getting git hash: {e}", exc_info=True)
+        return None
+
+
 def to_snake_case(text: str) -> str:
     text = text.replace("-", "_").replace(" ", "_").replace(".", "_")
     text = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", text)

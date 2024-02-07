@@ -11,6 +11,7 @@ from .codemod import (
     write_requirements_txt_if_needed,
 )
 from .models import Workbook
+from .utils import git_hash_short
 
 
 def _parse_requirements(requirements_content: str) -> list[str]:
@@ -38,10 +39,13 @@ class SetupRunner:
                 if should_expand_vars
                 else requirements_content.splitlines()
             )
+        version = self.workbook.package_version if self.workbook else "0.0.0"
+        git_hash = git_hash_short()
+        version_maybe_suffixed = f"{version}-{git_hash}" if git_hash else version
 
         self._setup(
             name=self.package_name,
-            version=self.workbook.package_version if self.workbook else "0.0.0",
+            version=version_maybe_suffixed,
             packages=find_packages(
                 where=self.workbook_root.absolute(),
                 exclude=[
