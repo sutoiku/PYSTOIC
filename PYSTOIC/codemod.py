@@ -114,11 +114,23 @@ def setup_module_init_file(module_root: Path):
 
 
 def remove_tests(python_src: str) -> str:
+    def is_pytest_decorated(node) -> bool:
+        def is_pytest_call(decorator):
+            if isinstance(decorator, ast.Call):
+                return is_pytest_call(decorator.func)
+            elif isinstance(decorator, ast.Attribute):
+                return is_pytest_call(decorator.value)
+            elif isinstance(decorator, ast.Name):
+                return decorator.id == "pytest"
+            return False
+
+        return any(is_pytest_call(decorator) for decorator in node.decorator_list)
+
     class RemoveTestsTransformer(ast.NodeTransformer):
         def visit_FunctionDef(self, node):
             # Remove functions starting with 'test_' by skipping their visit
             # i.e. not including them in the returned tree
-            if node.name.startswith("test_"):
+            if node.name.startswith("test_") or is_pytest_decorated(node):
                 return None
             return self.generic_visit(node)
 
