@@ -175,6 +175,7 @@ def read_workbook(workbook_root: Path) -> Workbook:
         name=workbook_root.name,
         path=path,
         properties=read_resource_properties(resource_spec=workbook_spec),
+        schema_version=workbook_spec["schemaVersion"],
         spec=workbook_spec,
         tags=read_resource_tags(resource_spec=workbook_spec),
         workfolders=read_workfolders(path, workbook_spec["workfolders"]),

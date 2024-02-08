@@ -94,6 +94,7 @@ class Workbook:
     name: str
     path: Path
     properties: dict[str, str]
+    schema_version: int
     spec: dict
     tags: list[str]
     workfolders: list[Workfolder]

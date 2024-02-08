@@ -202,17 +202,18 @@ def file_was_already_processed(python_file: Path) -> bool:
     return AUTO_GENERATED_HEADER in python_src
 
 
-def normalize_workbook(workbook: Workbook):
+def normalize_workbook(workbook: Workbook, create_module_roots: bool = False):
     python_files = workbook.python_files
     logging.info(f"Applying patches to python files: {python_files}")
     for python_file in python_files:
         file_ctxt = workbook.contextualize_file(python_file)
         patch_python_file(file_ctxt)
 
-    module_roots = [nb.path for nb in workbook.python_notebooks]
-    logging.info(f"Creating `__init__.py` in module roots: {module_roots}")
-    for module_root in module_roots:
-        setup_module_init_file(module_root)
+    if create_module_roots:
+        module_roots = [nb.path for nb in workbook.python_notebooks]
+        logging.info(f"Creating `__init__.py` in module roots: {module_roots}")
+        for module_root in module_roots:
+            setup_module_init_file(module_root)
 
 
 def normalize_dir_structure(workbook: Workbook, package_name: str):
