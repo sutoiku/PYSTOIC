@@ -11,7 +11,7 @@ from .codemod import (
     write_requirements_txt_if_needed,
 )
 from .models import Workbook
-from .utils import git_hash_short
+from .utils import git_package_identifier
 
 
 def _parse_requirements(requirements_content: str) -> list[str]:
@@ -40,8 +40,10 @@ class SetupRunner:
                 else requirements_content.splitlines()
             )
         version = self.workbook.package_version if self.workbook else "0.0.0"
-        git_hash = git_hash_short()
-        version_maybe_suffixed = f"{version}+{git_hash}" if git_hash else version
+        git_identifier = git_package_identifier()
+        version_maybe_suffixed = (
+            f"{version}+{git_identifier}" if git_identifier else version
+        )
         packages = find_packages(self.workbook_root, include=[f"{self.package_name}*"])
         logging.info(f"Found packages: {packages}")
         self._setup(
@@ -59,7 +61,10 @@ class SetupRunner:
             logging.info(f"Producing {target_package_path}...")
             workbook = read_workbook(self.workbook_root)
             self.workbook = workbook
-            normalize_workbook(workbook, kwargs.pop("create_module_roots", workbook.schema_version < 18))
+            normalize_workbook(
+                workbook,
+                kwargs.pop("create_module_roots", workbook.schema_version < 18),
+            )
             normalize_dir_structure(workbook, self.package_name)
             lint_package()
             write_requirements_txt_if_needed(workbook)
