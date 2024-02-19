@@ -67,9 +67,7 @@ def install_requirements(
     all_requirements = collect_requirements(
         set(top_level_reqs), primary_branch, fallback_branch, pypi_local
     )
-    logger.debug(
-        f"Wheel file requirements: {sorted(all_requirements)}"
-    )
+    logger.debug(f"Wheel file requirements: {sorted(all_requirements)}")
 
     logger.info("🏷️ Classifying requirements...")
     wb, py = classify_reqs(list(all_requirements), wb_prefix)

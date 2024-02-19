@@ -81,7 +81,7 @@ def wheel_file_reqs(wheel_file: str) -> list[Requirement]:
 
 
 def is_wb_req(req_str: str, wb_prefix: str) -> bool:
-    return req_str.startswith(wb_prefix) and '==' in req_str
+    return req_str.startswith(wb_prefix) and "==" in req_str
 
 
 def collect_requirements(
