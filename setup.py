@@ -13,7 +13,7 @@ extras_require = {
 
 setup(
     name="PYSTOIC",
-    version="0.2.3",
+    version="0.2.4",
     packages=find_packages(),
     install_requires=install_requires,
     extras_require=extras_require,

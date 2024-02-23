@@ -149,7 +149,7 @@ def read_notebooks(wf: Path, notebooks_meta: list[dict]) -> list[Notebook]:
 def read_workfolder(wb: Path, workfolder_meta: dict) -> Workfolder:
     path = wb / workfolder_meta["name"]
     workfolder_spec: dict = json.loads((path / "Workfolder.json").read_text())
-    notebooks_meta = [p for p in workfolder_spec["pages"] if p["type"] == "notebook"]
+    notebooks_meta = [p for p in workfolder_spec.get("pages", []) if p.get("type") == "notebook"]
     return Workfolder(
         id=workfolder_meta["id"],
         description=workfolder_spec.get("description", None),
